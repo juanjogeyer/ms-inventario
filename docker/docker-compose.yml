@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  
+  # Microservicio de Catálogo
+  ms-catalogo:
+    build:
+      context: ..
+    container_name: ms-inventario
+    ports:
+      - "5004:5000"  # El contenedor expone el puerto 5001
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    external: true
