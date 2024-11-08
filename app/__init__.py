@@ -14,7 +14,7 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
-        from app.resource import inventario
-        app.register_blueprint(inventario)
+        from app.resource import stock
+        app.register_blueprint(stock)
 
     return app

@@ -1,6 +1,6 @@
 import unittest, os
 from app import create_app, db
-from app.model import Stock
+from app.models import Stock
 class StockTestCase(unittest.TestCase):
     
     def setUp(self):
@@ -24,14 +24,14 @@ class StockTestCase(unittest.TestCase):
     def test_stock(self):
         stock = self.__get_stock()
 
-        self.assertEqual(stock.producto_id, self.IDPRODUCTO_PRUEBA)
+        self.assertEqual(stock.producto, self.IDPRODUCTO_PRUEBA)
         self.assertEqual(stock.fecha_transaccion, self.FECHATRANSACCION_PRUEBA)
         self.assertEqual(stock.cantidad, self.CANTIDAD_PRUEBA)
         self.assertEqual(stock.entrada_salida, self.ENTRADASALIDA_PRUEBA)
 
     def __get_stock(self):
         stock = Stock()
-        stock.producto_id = self.IDPRODUCTO_PRUEBA
+        stock.producto = self.IDPRODUCTO_PRUEBA
         stock.fecha_transaccion = self.FECHATRANSACCION_PRUEBA
         stock.cantidad = self.CANTIDAD_PRUEBA
         stock.entrada_salida = self.ENTRADASALIDA_PRUEBA
