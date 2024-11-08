@@ -1,23 +1,23 @@
 from app.repository import StockRepository
-from app.model import Stock
+from app.models import Stock
+from datetime import datetime
 
 repository = StockRepository()
 
 class StockService:
 
-    def all(self) -> list[Stock]:
-        return repository.all()
-    
-    def add(self, stock: Stock) -> Stock:
-        return repository.add(stock)
+    def retirar(self, stock: Stock) -> Stock:
+        result = None
+        if stock is not None:
+            stock.fecha_transaccion = stock.fecha_transaccion if stock.fecha_transaccion is not None else datetime.now()
+            stock.entrada_salida = 2 # Salida de Producto
+            result = repository.add(stock)
+        return result
 
-    def delete(self, id: int) -> bool:
-        stock = self.find(id)
-        if stock:
-            repository.delete(stock)
-            return True
-        else: 
-            return False
-
-    def find(self, id: int) -> Stock:
-        return repository.find(id)
+    def ingresar(self, stock: Stock) -> Stock:
+        result = None
+        if stock is not None:
+            stock.fecha_transaccion = stock.fecha_transaccion if stock.fecha_transaccion is not None else datetime.now()
+            stock.entrada_salida = 1 # Entrada de Producto
+            result = repository.add(stock)
+        return result
