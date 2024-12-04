@@ -1,4 +1,5 @@
-FROM python:3.10-slim-bullseye
+FROM python:3.12-slim-bookworm
+ENV TZ=America/Argentina/Mendoza
 
 ENV FLASK_CONTEXT=production
 ENV PYTHONUNBUFFERED=1
@@ -10,7 +11,10 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     python3-psycopg2 \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -21,9 +25,11 @@ COPY ./app.py .
 # Añadir el archivo requirements.txt e instalar las dependencias de Python
 ADD requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gevent==24.10.3 gunicorn==23.0.0
 
 # Exponer el puerto 5000 para Flask
 EXPOSE 5000
 
 # Comando para ejecutar la aplicación Flask
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["gunicorn", "--workers", "2", "--threads", "6","--log-level", "INFO", "--bind", "0.0.0.0:5000", "app:create_app()"]
+#CMD ["flask", "run", "--host=0.0.0.0"]
