@@ -6,7 +6,7 @@ class StockSchema(Schema):
     producto = fields.Integer(required=True)
     fecha_transaccion = fields.DateTime(required=False)
     cantidad = fields.Float(required=True, validate=validate.Range(min=0))
-    entrada_salida = fields.Integer(required=True, validate=validate.OneOf([1, 2]))  # 1: entrada, 2: salida
+    entrada_salida = fields.Integer(required=True, validate=validate.OneOf([1, -1]))  # 1: entrada, -1: salida
 
     @post_load
     def make_stock(self, data, **kwargs):

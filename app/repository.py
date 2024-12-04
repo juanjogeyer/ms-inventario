@@ -7,3 +7,9 @@ class StockRepository:
         db.session.add(stock)
         db.session.commit()
         return stock
+    
+    def calcular_stock_total(self, producto_id: int) -> float:
+        result = db.session.query(
+            db.func.sum(Stock.cantidad * Stock.entrada_salida)).filter(Stock.producto == producto_id).scalar()
+
+        return result if result else 0.0
